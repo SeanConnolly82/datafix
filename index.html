@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>datafix</title>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="myStyle.css">
+<link rel="icon" type="image/png" href="images/dot.png"/>
+<link rel="icon" type="image/png" href="images/dot.png"/>
+</head>
+<body>
+    <div id="container"> 
+        <div id="header">
+          <ul>
+            <li><a class="active" href="#home">Home</a></li>
+            <li class="dropdown">
+              <a href="about.html">About</a>
+            </li>           
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Charts</a>
+              <div class="dropdown-content">
+                <a href="donut_barchart.html">Interactive Chart</a>
+                <a href="bar_chart.html">Dynamic Bar Chart</a>
+                <a href="donut_chart.html">Donut Chart</a>          
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Maps</a>
+              <div class="dropdown-content">
+                <a href="ireland_map.html">Ireland map - interactive</a>                     
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Graphics</a>
+              <div class="dropdown-content">
+                <a href="wind_turbine.html">Wind turbine animation</a>
+                <a href="colour_change.html">Colour change</a>                      
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Projects</a>
+              <div class="dropdown-content">
+                <a href="android.html">Switching LEDs</a>                     
+              </div>
+            </li>
+          </ul>
+        </div>   
+        <div id="body">       
+            <script>
+
+            /*var colour = ['#008080','#EE1C24','#8B5E3C']
+
+            var svg = d3.select("#body")
+              	.append("svg")
+              	.attr("width", 200)
+              	.attr("height", 100);
+
+            svg.selectAll("circle")
+                .data([50, 90, 130])
+              .enter().append("circle")
+                .attr("cy", 60)
+                .attr("cx", 50)
+                .attr("r", 16)
+                .attr("fill", function(d, i) {return(colour[i]);})
+                .attr("opacity",0);
+
+            d3.selectAll("circle").transition()
+            	.duration(2750)
+            	.attr("opacity",1)
+            	.transition()
+                .duration(1500)
+                .attr("cx", function(d) {return(d);});*/
+            	
+            function fadeIn(vis) {
+                vis.style.opacity='1';
+            	}  
+
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-85168088-1', 'auto');
+            ga('send', 'pageview');
+            
+            </script>
+
+        
+        <img id="logo" onload=fadeIn(this) src="images\logo.png" class="centered">      
+       
+    </div>
+    <div id="footer" style="text-align:center">
+        <p style="font-size:12px"><a href="mailto:info@datafix.ie">info@datafix.ie</a></p>
+        <p>Copyright datafix 2016</p>
+    </div>
+</div>
+
+</body>
+
+</html>

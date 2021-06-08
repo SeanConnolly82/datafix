@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>datafix</title>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="myStyle.css">
+<link rel="icon" type="image/png" href="images/dot.png"/>
+</head>
+<body>
+    <div id="container"> 
+        <div id="header">
+          <ul style="position: fixed">
+            <li class="dropdown">
+              <a href="index.html">Home</a>
+            </li>  
+            <li class="dropdown">
+              <a href="about.html">About</a>
+            </li>            
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Charts</a>
+              <div class="dropdown-content" style="position: fixed">
+                <a href="donut_barchart.html">Interactive Chart</a>
+                <a href="bar_chart.html">Dynamic Bar Chart</a>
+                <a href="donut_chart.html">Donut Chart</a>          
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Maps</a>
+              <div class="dropdown-content" style="position: fixed">
+                <a href="ireland_map.html">Ireland map - interactive</a>                     
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Graphics</a>
+              <div class="dropdown-content" style="position: fixed">
+                <a href="wind_turbine.html">Wind turbine animation</a>  
+                <a href="colour_change.html">Colour change</a>                   
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Projects</a>
+              <div class="dropdown-content" style="position: fixed">
+                <a href="android.html">Switching LEDs</a>                     
+              </div>
+            </li>
+          </ul>
+        </div>  
+        <div id="body">  
+            <div id="description"> 
+              <h1>Donut Chart</h1>
+              <p style="font-size:16px">This is a simple donut chart that I will add more interactivity to later.</p>
+              <script>               
+               
+                function mouseOver(county) {tooltip.style("opacity", 0.7)
+                      .text("Co. " + county.data.name + " Value " + county.value);}
+
+                function mouseOut() {tooltip.style("opacity", 0);}
+
+                //var counties = [
+                //    { name: 'Abulia', value: 10 }, 
+                //    { name: 'Betelgeuse', value: 20 },
+                //    { name: 'Cantaloupe', value: 30 },
+                //    { name: 'Dijkstra', value: 40 },
+                //    { name: 'Test', value: 15 }
+                //    ];
+
+                var width = 800;
+                var height = 400;
+                var radius = Math.min(width, height) / 2 - 20;
+                var donutWidth = 65;
+                var legendRectSize = 18;                                  
+                var legendSpacing = 4;                                    
+
+                //var color = d3.scale.category20b();
+
+                var color = ['#FFF275','#FF8C42','#FF3C38','#A23E48','#2A9D8F']
+
+                var tooltip = d3.select('#description')
+                        .append('div')
+                        .attr('class','tooltip')
+                        .attr('id','tip')
+                        .style('z-index','10')
+                        .style('opacity','0');
+
+                var svg = d3.select('#description')
+                        .append('svg')
+                        .attr('width', width)
+                        .attr('height', height)
+                        .append('g')
+                        .attr('transform', 'translate(200,' + (height / 2) + ')');
+
+                var arc = d3.svg.arc()
+                        .innerRadius(radius - donutWidth)
+                        .outerRadius(radius);
+
+                var pie = d3.layout.pie()
+                        .value(function(d) { return d.value; })
+                        .sort(null); 
+
+                d3.csv("http://www.datafix.ie/data/counties.csv", function(error, counties) {
+                      //console.log(counties);
+                      counties.forEach(function(d) {
+                      d.value = +d.value;
+                      }); 
+                     
+                      var path = svg.selectAll('path')
+                        .data(pie(counties))
+                        .enter()
+                        .append('path')
+                        .attr('d', arc)
+                        .attr("class", "pie") 
+                        .attr('id', function(d) {
+                          return d.data.name;
+                        })
+                        .attr('fill', function(d, i) { 
+                          return color[i];
+                        })
+                        .on('mouseover', function(d) {
+                          mouseOver(d);
+                        })
+                        .on('mouseout', function(d) {
+                          mouseOut(d);
+                        });
+
+                      var legend = svg.selectAll('.legend')                     
+                        .data(counties)                                   
+                        .enter()                                                
+                        .append('g')                                           
+                        .attr('class', 'legend')                               
+                        .attr('transform', function(d, i) {                     
+                          var height = legendRectSize + legendSpacing;          
+                          var offset =  height * counties.length / 2;     
+                          var horz = -2 * legendRectSize + 250;                       
+                          var vert = i * height - offset;                       
+                          return 'translate(' + horz + ',' + vert + ')';        
+                        });                                                     
+
+                      legend.append('rect')                                     
+                        .attr('width', legendRectSize)                          
+                        .attr('height', legendRectSize)                       
+                        .style('fill', function(d, i) { 
+                          return color[i];
+                        })                                   
+                        .style('stroke', function(d, i) { 
+                          return color[i];
+                        });                                
+                        
+                      legend.append('text')                                     
+                        .attr('x', legendRectSize + legendSpacing)              
+                        .attr('y', legendRectSize - legendSpacing)              
+                        .text(function(d) { return d.name; });  
+                    }); 
+
+              </script>
+            </div>
+        </div>
+        <div id="footer" style="text-align:center">
+            <p><a href="mailto:info@datafix.ie">info@datafix.ie</a></p>
+            <p>Copyright datafix 2016</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>datafix</title>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="myStyle.css">
+<link rel="icon" type="image/png" href="images/dot.png"/>
+</head>
+<body>
+    <div id="container"> 
+        <div id="header">
+          <ul style="position: fixed">
+            <li class="dropdown">
+              <a href="index.html">Home</a>
+            </li>  
+            <li class="dropdown">
+              <a href="about.html">About</a>
+            </li>            
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Charts</a>
+              <div class="dropdown-content" style="position: fixed">
+                <a href="donut_barchart.html">Interactive Chart</a>
+                <a href="bar_chart.html">Dynamic Bar Chart</a>
+                <a href="donut_chart.html">Donut Chart</a>          
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Maps</a>
+              <div class="dropdown-content" style="position: fixed">
+                <a href="ireland_map.html">Ireland map - interactive</a>                     
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Graphics</a>
+              <div class="dropdown-content" style="position: fixed">
+                <a href="wind_turbine.html">Wind turbine animation</a>  
+                <a href="colour_change.html">Colour change</a>                   
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropbtn">Projects</a>
+              <div class="dropdown-content" style="position: fixed">
+                <a href="android.html">Switching LEDs</a>                     
+              </div>
+            </li>
+          </ul>
+        </div>  
+        <div id="body">  
+            <div id="description"> 
+              <h1>Bar Chart</h1>
+              <p style="font-size:16px">This is a simple bar chart that provides a foundation for
+                 more animations and interactivity that I will add later.</p>
+              <script>
+                
+                var barHeight = 350
+                var height  = 600
+                var width = 1000 
+                var paddingTop = 10           
+                var paddingRight = 50
+                var chartWidth = 400
+
+                var yScale = d3.scale.linear()
+                  
+                var xScale = d3.scale.ordinal()
+                 
+                var yAxis = d3.svg.axis()
+                    .scale(yScale)
+                    .orient("top");
+
+                var xAxis = d3.svg.axis()
+                    .scale(xScale)
+                    .orient("bottom");
+
+                var svg = d3.select("#description")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append("g")
+                    .attr("transform","translate(" + paddingRight + ", 10)");              
+
+               d3.csv("http://www.datafix.ie/data/counties.csv", function(error, counties) {
+                      console.log(counties);
+                      counties.forEach(function(d) { d.value = +d.value;});
+
+                      yScale.domain([0, d3.max(counties, function(d) { return d.value;})])
+                         .range([0, barHeight - paddingTop]);
+
+                      xScale.domain(counties.map(function(d) { return d.name;}))
+                         .rangeBands([0, chartWidth],.2);
+                        
+                      svg.append("g")
+                        .call(yAxis)
+                        .attr("transform","translate(0," + barHeight  + ")rotate(270)")
+                        .attr("class","axis");
+                      
+                      svg.append("g")
+                        .call(xAxis)
+                        .attr("transform","translate(0," + barHeight + ")")
+                        .attr("class","axis");
+                      
+                      svg.selectAll("rect")
+                        .data(counties)
+                      .enter().append("rect")
+                        .attr("x", function(d) {return(xScale(d.name));})
+                        .attr("y", function(d) {return(barHeight - yScale(d.value));})                            
+                        .attr("width", xScale.rangeBand())
+                        .attr("height", function(d) {return yScale(d.value);})         
+                        .attr("class", "bar");                 
+              });              
+              </script>
+            </div>
+        </div>
+        <div id="footer" style="text-align:center">
+            <p><a href="mailto:info@datafix.ie">info@datafix.ie</a></p>
+            <p>Copyright datafix 2016</p>
+        </div>
+    </div>
+</body>
+</html>
